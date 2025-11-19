@@ -107,7 +107,7 @@ See [msf_gif.h](https://github.com/WafiWadud/line-boil/blob/main/msf_gif.h) and 
 ## Credits
 
 - [stb_truetype.h](https://github.com/nothings/stb) by Sean Barrett & contributors
-- [msf_gif.h](https://github.com/castano/msf_gif) by Miles Fogle
+- [msf_gif.h](https://github.com/notnullnotvoid/msf_gif) by notnullnotvoid
 - Project by [WafiWadud](https://github.com/WafiWadud)
 
 ---
