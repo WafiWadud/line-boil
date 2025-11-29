@@ -1,136 +1,137 @@
-# line-boil
+# **README — lineboil**
 
-A minimal toolchain for generating "boiling" animated GIFs from font glyphs and rendering animated text in C.
+**lineboil** is a small SDL2 project that simulates _line boiling_ — a hand-drawn animation jitter effect — on monospaced text.
+It renders the text repeatedly with small randomized offsets, producing a stylized “boiling lines” animation at **12 frames per second**.
+
+> [!WARNING] This program is a memory hog! Make sure to adjust the pregreneration count if you have limited RAM.
+
+The program works in two stages:
+
+1. **Pre-renders 72 frames** (6 seconds at 12 FPS) off-screen before showing anything.
+2. **Plays those frames**, while a background thread continues generating more frames for seamless playback.
 
 # TODO: Merge play and gen, also instead of generating a gif for each glyph, render them in realtime, no need for FRAMES as each frame will be generated in realtime too.
 
 ---
 
-## Overview
+## **Features**
 
-**line-boil** is a project for producing animated GIFs of each glyph in a font, with a subtle "boiling" noise effect. It also includes a simple SDL2-based renderer to display animated text using those generated GIF glyphs.
-
-- `gen.c` creates per-glyph boiling GIFs from a font.
-- `play.c` renders animated text in an SDL2 window from generated GIF glyphs.
-
----
-
-## Features
-
-- Procedural boiling effect for each glyph using Voronoi noise.
-- Generates a GIF for each printable ASCII glyph (codepoints 32–127) from a supplied TrueType or OpenType font.
-- Built-in fast GIF writing (`msf_gif.h`).
-- Minimal dependencies: only SDL2 and giflib needed for playback.
-- Simple Makefile for building.
+- Smooth 12 FPS playback
+- 72-frame preroll for instant animation start
+- Continuous background frame generation while playback occurs
+- Uses SDL2 + SDL_ttf
+- High-resolution, low-jitter character-level animation
+- Cross-platform C code (Linux, Windows, BSD, macOS)
 
 ---
 
-## Requirements
+## **Building**
 
-**Generation (`gen.c`)**
+A Makefile is already included.
+To build:
 
-- C compiler (Clang recommended)
-- Font file (`font.otf` or any OTF/TTF font)
-- No external dependencies (all required headers included)
-
-**Playback (`play.c`)**
-
-- SDL2 development libraries
-- giflib development libraries
-
----
-
-## Build Instructions
-
-On Linux/macOS:
-
-```sh
-# Install SDL2 and giflib if needed
-# (Debian/Ubuntu: sudo apt install libsdl2-dev libgif-dev)
-
-make all
+```bash
+make
 ```
 
-This builds two binaries:
+This produces an executable named:
 
-- `gen` – glyph GIF generator
-- `play` – animated text player
+```
+lineboil
+```
 
-To clean up:
+### **Dependencies**
 
-```sh
-make clean
+You’ll need development headers for:
+
+- `SDL2`
+
+On Linux/Arch:
+
+```bash
+sudo pacman -S sdl2
+```
+
+On Debian/Ubuntu:
+
+```bash
+sudo apt install libsdl2-dev
 ```
 
 ---
 
-## Usage
+## **Running**
 
-### 1. Generate Glyph GIFs
+Simply run:
 
-By default, `gen` uses `font.otf`. You can specify another font file:
-
-```sh
-./gen path/to/your/fontfile.otf
+```bash
+./lineboil
 ```
 
-This outputs `glyph_XXX.gif` files (one per glyph) in the working directory.
+What happens:
 
-### 2. Play Animated Text
+1. A window opens immediately (blank).
+2. The program quietly generates 72 frames off-screen.
+3. Once done, playback starts at **12 FPS**.
+4. Meanwhile, a background thread keeps generating new frames.
+5. When the initial 72 frames finish, the newly generated frames begin playing automatically.
 
-After glyph GIFs are generated, use `play`:
-
-```sh
-./play
-```
-
-An SDL2 window will open, displaying sample animated sentences using the generated boiling glyphs.
+No input required; the animation loops continuously as long as the program stays open.
 
 ---
 
-## File Overview
+## **How It Works (Frame Pipeline Overview)**
 
-- `gen.c` – Generates GIFs for every glyph using procedural noise, creating an animated "boil" effect.
-- `play.c` – Loads generated GIFs and renders strings of animated text in a window.
-- `msf_gif.h`, `stb_truetype.h` – Bundled dependencies for GIF encoding and font rasterization.
-- `Makefile` – Simplified build system.
+### **1. Pre-generation phase**
 
----
+Before the first frame is shown, the program:
 
-## License
+- Renders each frame into an `SDL_Texture`
+- Stores them in a ring buffer
+- Produces exactly **72 textures** for the initial minute of animation
 
-- **msf_gif.h** and other bundled sources are under MIT or Public Domain (see respective headers).
-- This repository’s original code is MIT licensed.
+These frames are rendered using:
 
-See [msf_gif.h](https://github.com/WafiWadud/line-boil/blob/main/msf_gif.h) and other headers for details.
+- A fixed seed per frame
+- Randomized per-glyph offsets
+- A consistent layout grid for text
 
----
+### **2. Playback phase**
 
-## Credits
+Playback runs on the main thread at a fixed 12 FPS:
 
-- [stb_truetype.h](https://github.com/nothings/stb) by Sean Barrett & contributors
-- [msf_gif.h](https://github.com/notnullnotvoid/msf_gif) by notnullnotvoid
-- Project by [WafiWadud](https://github.com/WafiWadud)
+- Reads from the pre-generated frame array
+- Draws one texture per frame
+- Tracks frame timers precisely using SDL ticks
 
----
+### **3. Background generation**
 
-## Example
+While playback runs:
 
-![](glyph_065.gif)
+- A worker thread continues producing additional frames
+- These frames are appended to a second buffer
+- When the first block finishes, the program immediately switches to the new frames
 
----
-
-## Advanced
-
-To change effect strength or GIF quality, tweak constants near the top of `gen.c`.
-
----
-
-## Troubleshooting
-
-- Ensure that `font.otf` (or the font you specify) is present and readable.
-- SDL2/giflib must be installed for running `play.c`.
+The effect:
+No frame drops, no delays, no visible hiccups.
 
 ---
 
-Happy boiling!
+## **Why Pre-generate Frames?**
+
+Line boiling is expensive — every character jitter must be recalculated.
+Pre-generating frames:
+
+- Guarantees perfect playback timing
+- Avoids CPU spikes
+- Lets slow machines still maintain 12 FPS
+- Allows the background generator to work asynchronously
+
+---
+
+## **Customizing**
+
+The displayed text is defined in the C source.
+Feel free to edit the `main_text[]` constant to display whatever you want.
+Multi-line text works fine.
+Change the pre-generation count by modifying the `PREG` constant.

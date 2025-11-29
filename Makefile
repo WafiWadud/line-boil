@@ -1,27 +1,26 @@
 # Compiler
 CC = clang
 
-# Common flags for both targets
+# Compiler flags
 CFLAGS = -Wall -Wextra -O3 -march=native -flto -ffast-math \
          -fno-ident -fno-asynchronous-unwind-tables -fno-stack-protector \
          -funroll-loops -fomit-frame-pointer -ffunction-sections -fdata-sections \
-         -ffreestanding -fno-exceptions
+         -ffreestanding -fno-exceptions -lpthread
 
-LDFLAGS = -Wl,--gc-sections,--strip-all -lm
+# Linker flags
+LDFLAGS = -Wl,--gc-sections,--strip-all
 
-# SDL2 and GIF libraries for play target
-PLAY_LIBS = -lSDL2 -lgif
+# Libraries
+LIBS = -lSDL2 -lm
 
-# Targets
-all: gen play
+# Target
+all: lineboil
 
-gen: gen.c
-	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+lineboil: lineboil.c
+	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@ $(LIBS)
 
-play: play.c
-	$(CC) $(CFLAGS) $(LDFLAGS) $(PLAY_LIBS) $< -o $@
-
-# Clean up compiled binaries
+# Clean up compiled binary
 clean:
-	rm -f gen play
+	rm -f lineboil
 
+.PHONY: all clean
