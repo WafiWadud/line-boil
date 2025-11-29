@@ -2,6 +2,8 @@
 
 A minimal toolchain for generating "boiling" animated GIFs from font glyphs and rendering animated text in C.
 
+# TODO: Merge play and gen, also instead of generating a gif for each glyph, render them in realtime, no need for FRAMES as each frame will be generated in realtime too.
+
 ---
 
 ## Overview
