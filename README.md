@@ -17,7 +17,7 @@ The program works in two stages:
 - Smooth 12 FPS playback
 - 72-frame preroll for instant animation start
 - Continuous background frame generation while playback occurs
-- Uses SDL2 + SDL_ttf
+- Uses SDL2 + stb_truetype
 - High-resolution, low-jitter character-level animation
 - Cross-platform C code (Linux, Windows, BSD, macOS)
 
