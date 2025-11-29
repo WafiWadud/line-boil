@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
   const int LAST = 128;
   const int FRAMES = 60;         // frames per glyph
   const float SIZE_PX = 64.0f;   // pixel height used for baking
-  const float STRENGTH = 3.0f;   // boil strength
+  const float STRENGTH = 2.0f;   // boil strength
   const float FREQ = 0.04f;      // boil frequency
   const int CENTI_PER_FRAME = 8; // centiseconds per GIF frame (8 -> 12.5 FPS)
   const int QUALITY = 16;        // msf gif quality (1..16)
