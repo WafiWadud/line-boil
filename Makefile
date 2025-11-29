@@ -5,7 +5,7 @@ CC = clang
 CFLAGS = -Wall -Wextra -O3 -march=native -flto -ffast-math \
          -fno-ident -fno-asynchronous-unwind-tables -fno-stack-protector \
          -funroll-loops -fomit-frame-pointer -ffunction-sections -fdata-sections \
-         -ffreestanding -fno-exceptions
+         -ffreestanding -fno-exceptions -lpthread
 
 # Linker flags
 LDFLAGS = -Wl,--gc-sections,--strip-all
