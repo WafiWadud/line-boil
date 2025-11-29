@@ -10,8 +10,6 @@ The program works in two stages:
 1. **Pre-renders 72 frames** (6 seconds at 12 FPS) off-screen before showing anything.
 2. **Plays those frames**, while a background thread continues generating more frames for seamless playback.
 
-# TODO: Merge play and gen, also instead of generating a gif for each glyph, render them in realtime, no need for FRAMES as each frame will be generated in realtime too.
-
 ---
 
 ## **Features**
