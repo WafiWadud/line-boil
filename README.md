@@ -124,7 +124,7 @@ Pre-generating frames:
 
 - Guarantees perfect playback timing
 - Avoids CPU spikes
-- Lets slow machines still maintain 12 FPS
+- Lets slow machines still maintain 12 FPS (A.K.A mine)
 - Allows the background generator to work asynchronously
 
 ---
