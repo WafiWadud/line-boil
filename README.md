@@ -7,7 +7,7 @@ It renders the text repeatedly with small randomized offsets, producing a styliz
 
 The program works in two stages:
 
-1. **Pre-renders 72 frames** (6 seconds at 12 FPS) off-screen before showing anything.
+1. **Pre-renders 144 frames** (12 seconds at 12 FPS) off-screen before showing anything.
 2. **Plays those frames**, while a background thread continues generating more frames for seamless playback.
 
 ---
