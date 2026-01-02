@@ -36,11 +36,14 @@ The program works in two stages:
 
 ## **Building**
 
-A Makefile is already included.
+A Makefile is already included. Optionally there is a meson build file as well.
 To build:
 
 ```bash
 make
+# or for meson:
+./configure.sh
+meson compile -C build
 ```
 
 This produces an executable named:
@@ -54,17 +57,22 @@ lineboil
 You’ll need development headers for:
 
 - `SDL2`
+- Make or Meson.
 
 On Linux/Arch:
 
 ```bash
-sudo pacman -S sdl2
+sudo pacman -S sdl2 make
+# or for meson:
+sudo pacman -S sdl2 meson
 ```
 
 On Debian/Ubuntu:
 
 ```bash
-sudo apt install libsdl2-dev
+sudo apt install libsdl2-dev make
+# or for meson:
+sudo apt install libsdl2-dev meson
 ```
 
 ---
