@@ -69,3 +69,9 @@ executable(
   include_directories : include_directories('.'),
   install : false
 )
+
+configure_file(
+  input : 'font.otf',
+  output : 'font.otf',
+  copy : true
+)
