@@ -1,7 +1,6 @@
 #!/bin/sh
-set -eux
 
-BUILD_DIR=build
+set -eu
 
 echo "Select build type:"
 echo "  1) release"
@@ -10,6 +9,9 @@ echo "  3) debugoptimized"
 printf "Enter choice [1-3] (default: 1): "
 
 read -r choice || choice=""
+
+set -eux
+BUILD_DIR=build
 
 case "$choice" in
 2)
