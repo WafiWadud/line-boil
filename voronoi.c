@@ -9,6 +9,8 @@ static inline uint32_t hash2d(int x, int y) {
   return h ^ (h >> 16);
 }
 
+// TODO: Implement noise upscaling and noise caching for better performance,
+// maybe also try to optimize the algorithm itself.
 float voronoi(float x, float y, float t) {
   float px = x + sinf(t * 2.1f) * 0.3f;
   float py = y + cosf(t * 1.7f) * 0.3f;
@@ -34,6 +36,9 @@ float voronoi(float x, float y, float t) {
   return sqrtf(minDist);
 }
 
+// TODO: Implement Extremity bounds checking and some form of caching here, plus
+// some optimizations to reduce the number of voronoi calls, like mentioned in
+// `vornoi()` we could do some noise upscaling and noise caching.
 void boil_frame(uint8_t *dst, uint8_t *src, int w, int h, float t,
                 float strength, float freq) {
   for (int y = 0; y < h; y++) {

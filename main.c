@@ -9,7 +9,10 @@
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
+
 int main(int argc, char *argv[]) {
+  // TODO: Implement a usage or help message with an explanation of what the
+  // program does and its argumants.
   const char *fontfile = "font.otf";
   if (argc >= 2)
     fontfile = argv[1];
@@ -61,6 +64,7 @@ int main(int argc, char *argv[]) {
   cache.scale = stbtt_ScaleForPixelHeight(&cache.font, 64.0f);
 
   // Load glyphs
+  // TODO: Optimize this loop
   for (int i = 0; i < g_line_count; i++)
     for (int j = 0; g_lines[i][j]; j++)
       load_glyph(&cache, renderer, (unsigned char)g_lines[i][j]);
@@ -148,6 +152,7 @@ int main(int argc, char *argv[]) {
     Uint32 frame_start = SDL_GetTicks();
 
     // Convert background-produced pixel buffers to textures
+    // TODO: Optimize this
     pthread_mutex_lock(&bg_lock);
     while (framesB_pixels_size > 0) {
       uint32_t *pix = framesB_pixels[--framesB_pixels_size];

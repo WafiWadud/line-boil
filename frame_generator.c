@@ -39,6 +39,7 @@ int bg_keep_running = 1;
 pthread_mutex_t bg_lock = PTHREAD_MUTEX_INITIALIZER;
 GlyphCache *g_bg_cache = NULL;
 
+// TODO: Optimize this function somehow
 static void blit_glyph_to_pixels(uint32_t *dest, int dest_w, int dest_h,
                                  uint8_t *boiled, int gw, int gh, int dst_x,
                                  int dst_y) {
@@ -58,6 +59,7 @@ static void blit_glyph_to_pixels(uint32_t *dest, int dest_w, int dest_h,
   }
 }
 
+// TODO: Also optimize this function as well
 void render_frame_to_pixels(uint32_t *pixels, GlyphCache *cache, float t) {
   memset(pixels, 0, WIN_W * WIN_H * sizeof(uint32_t));
 
@@ -121,6 +123,8 @@ void *background_generator(void *arg) {
   while (bg_keep_running) {
     float t = frame_dt * idx++;
 
+    // TODO: Find a way to optimize this as it could theoritically be a
+    // bottleneck
     uint32_t *pixels = (uint32_t *)malloc(WIN_W * WIN_H * sizeof(uint32_t));
     if (!pixels) {
       usleep(5000);
