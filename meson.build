@@ -47,7 +47,6 @@ else
     '-O3',
     '-march=native',
     '-flto',
-    '-ffast-math',
     '-fno-ident',
     '-fno-asynchronous-unwind-tables',
     '-fno-stack-protector',

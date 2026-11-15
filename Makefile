@@ -29,7 +29,7 @@ COMMON_LDFLAGS =
 # Release flags
 # ======================
 RELEASE_CFLAGS = \
-	-O3 -march=native -flto -ffast-math \
+	-O3 -march=native -flto \
 	-fno-ident -fno-asynchronous-unwind-tables -fno-stack-protector \
 	-funroll-loops -fomit-frame-pointer \
 	-ffunction-sections -fdata-sections \
